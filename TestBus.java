@@ -99,6 +99,8 @@ public class TestBus {
                     System.out.println(" " + s);
                 }
 
+                System.out.println("\n───────────────────────────────────────────────────────────────────────────────────");
+
             } else if (pilihan == 6) {
                 System.out.println(Bus.ANSI_CYAN + "Program selesai." + Bus.ANSI_RESET);
                 break;

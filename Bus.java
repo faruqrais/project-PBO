@@ -137,7 +137,11 @@ public class Bus {
 
     public String statusString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("===== STATUS BUS =====\n");
+        sb.append(Bus.ANSI_CYAN +
+    "┌───────────────────────────────────┐\n" +
+    "│            STATUS BUS             │\n" +
+    "└───────────────────────────────────┘\n"
+    + Bus.ANSI_RESET);
         sb.append("Penumpang Prioritas (max 4): ");
         if (penumpangPrioritas.isEmpty()) sb.append("<kosong>\n");
         else {

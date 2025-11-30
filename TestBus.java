@@ -75,11 +75,15 @@ public class TestBus {
                 }
 
             } else if (pilihan == 5) {
-                System.out.println("----- LOG TRANSAKSI -----");
+                System.out.println(Bus.ANSI_CYAN +
+                "┌────────────────────────────────┐\n" +
+                "│         LOG TRANSAKSI          │\n" +
+                "└────────────────────────────────┘\n"
+                + Bus.ANSI_RESET);
+
                 for (String s : bus.getLog().getAll()) {
-                    System.out.println(s);
+                    System.out.println(" " + s);
                 }
-                System.out.println("-------------------------");
 
             } else if (pilihan == 6) {
                 System.out.println(Bus.ANSI_CYAN + "Program selesai." + Bus.ANSI_RESET);

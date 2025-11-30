@@ -37,8 +37,7 @@ public class Bus {
         return getJumlahPenumpangBiasa() + getJumlahPenumpangPrioritas() + getJumlahPenumpangBerdiri();
     }
 
-    // cek duplikat nama (case-insensitive)
-    private boolean adaNamaDuplikat(String nama) {
+    private boolean adaNamaDuplikat(String nama) { //untuk ngecek nama yang duplikat
         String target = nama.trim().toLowerCase();
         for (Penumpang p : allPenumpang()) {
             if (p.getNama().trim().toLowerCase().equals(target)) return true;
@@ -54,8 +53,7 @@ public class Bus {
         return all;
     }
 
-    // Naikkan penumpang - mengembalikan pesan hasil
-    public synchronized String naikkanPenumpang(Penumpang p) {
+    public synchronized String naikkanPenumpang(Penumpang p) { //naiikin penumpang
         if (totalSemuaPenumpang() >= 40) {
             return ANSI_RED + "Gagal: Bus sudah penuh!" + ANSI_RESET;
         }
@@ -66,10 +64,8 @@ public class Bus {
             return ANSI_YELLOW + "Gagal: Saldo tidak cukup." + ANSI_RESET;
         }
 
-        // tentukan apakah prioritas by rule
         boolean isPriorRule = p.isPrioritasByRule();
 
-        // kurangi saldo & tambah pendapatan
         try {
             p.kurangiSaldo(ONGKOS_BUS);
         } catch (IllegalStateException ex) {
@@ -78,12 +74,12 @@ public class Bus {
 
         totalPendapatan += ONGKOS_BUS;
 
-        // tempatkan sesuai aturan:
+        // tempatin sesuai aturan:
         if (isPriorRule) {
             if (penumpangPrioritas.size() < 4) {
                 penumpangPrioritas.add(p);
             } else if (penumpangBiasa.size() < 16) {
-                penumpangBiasa.add(p); // prioritas boleh duduk di biasa
+                penumpangBiasa.add(p); // prioritas boleh duduk di kursi biasa jika masih kosong 
             } else {
                 penumpangBerdiri.add(p);
             }
@@ -123,7 +119,7 @@ public class Bus {
         }
     }
 
-    // top-up untuk penumpang yang sedang di bus (by name)
+    // top-up untuk penumpang yang sedang di bus (dari nama penumpang)
     public synchronized String topUpSaldo(String nama, int nominal) {
         for (Penumpang p : allPenumpang()) {
             if (p.getNama().equalsIgnoreCase(nama)) {

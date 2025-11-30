@@ -38,7 +38,7 @@ public class TestBus {
                     System.out.print("Umur: ");
                     int umur = Integer.parseInt(sc.nextLine().trim());
 
-                    System.out.print("Hamil/lansia (y/n): ");
+                    System.out.print("Hamil (y/n): ");
                     boolean hamil = sc.nextLine().trim().equalsIgnoreCase("y");
 
                     Penumpang candidate;

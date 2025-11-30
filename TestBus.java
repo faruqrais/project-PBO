@@ -1,6 +1,7 @@
 import java.util.Scanner;
 
 public class TestBus {
+    private static final String LINE = "────────────────────────────────";
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         Bus bus = new Bus();
@@ -31,29 +32,42 @@ public class TestBus {
             }
 
             if (pilihan == 1) {
-                try {
-                    System.out.print("Nama: ");
-                    String nama = sc.nextLine().trim();
+            while (true) {  //supaya bisa tambbah beberapa penumpang sekaligus
+            System.out.println("  > Tambah Penumpang\n" + LINE);
 
-                    System.out.print("Umur: ");
-                    int umur = Integer.parseInt(sc.nextLine().trim());
+            try {
+                System.out.print("  Nama           : ");
+                String nama = sc.nextLine().trim();
 
-                    System.out.print("Hamil (y/n): ");
-                    boolean hamil = sc.nextLine().trim().equalsIgnoreCase("y");
+                System.out.print("  Umur           : ");
+                int umur = Integer.parseInt(sc.nextLine().trim());
 
-                    Penumpang candidate;
-                    boolean isPrior = (umur > 60) || (umur < 10) || hamil;
-                    if (isPrior) candidate = new PenumpangPrioritas(nama, umur, hamil);
-                    else candidate = new PenumpangBiasa(nama, umur, hamil);
+                System.out.print("  Hamil (y/n)    : ");
+                boolean hamil = sc.nextLine().equalsIgnoreCase("y");
 
-                    String result = bus.naikkanPenumpang(candidate);
-                    System.out.println(result);
+                boolean priorRule = (umur > 60) || (umur < 10) || hamil;
 
-                } catch (NumberFormatException ex) {
-                    System.out.println(Bus.ANSI_YELLOW + "Umur harus angka!" + Bus.ANSI_RESET);
-                } catch (Exception ex) {
-                    System.out.println(Bus.ANSI_RED + "Terjadi error: " + ex.getMessage() + Bus.ANSI_RESET);
+                Penumpang p = priorRule ?
+                    new PenumpangPrioritas(nama, umur, hamil) :
+                    new PenumpangBiasa(nama, umur, hamil);
+
+                System.out.println("\n" + bus.naikkanPenumpang(p));}
+                catch (Exception ex) {
+                System.out.println(Bus.ANSI_RED +
+                    "\n  Terjadi error saat input: " + ex.getMessage() +
+                    Bus.ANSI_RESET);
                 }
+
+                System.out.print("\nTambah penumpang lagi? (y/n): ");
+                String lagi = sc.nextLine().trim();
+
+                if (!lagi.equalsIgnoreCase("y")) break;
+
+                System.out.println();
+                }
+
+                System.out.println("\nTekan ENTER untuk kembali...");
+                sc.nextLine();
 
             } else if (pilihan == 2) {
                 System.out.print("Nama yang ingin turun: ");

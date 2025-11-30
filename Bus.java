@@ -136,36 +136,57 @@ public class Bus {
     }
 
     public String statusString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(Bus.ANSI_CYAN +
+    StringBuilder sb = new StringBuilder();
+
+    sb.append(Bus.ANSI_CYAN +
     "┌───────────────────────────────────┐\n" +
     "│            STATUS BUS             │\n" +
-    "└───────────────────────────────────┘\n"
+    "└───────────────────────────────────┘\n\n"
     + Bus.ANSI_RESET);
-        sb.append("Penumpang Prioritas (max 4): ");
-        if (penumpangPrioritas.isEmpty()) sb.append("<kosong>\n");
-        else {
-            for (Penumpang p : penumpangPrioritas) sb.append(p.getNama()).append(", ");
-            sb.append("\n");
+
+    // ======================= KURSI PRIORITAS ==========================
+    sb.append("Kursi Prioritas (4 kursi):\n");
+
+    for (int i = 0; i < 4; i++) {
+        if (i < penumpangPrioritas.size()) {
+            Penumpang p = penumpangPrioritas.get(i);
+            sb.append(String.format("  (P%02d) %-12s (%d th)\n",
+                    i + 1, p.getNama(), p.getUmur()));
+        } else {
+            sb.append(String.format("  (P%02d) <kosong>\n", i + 1));
         }
-
-        sb.append("Penumpang Biasa (max 16): ");
-        if (penumpangBiasa.isEmpty()) sb.append("<kosong>\n");
-        else {
-            for (Penumpang p : penumpangBiasa) sb.append(p.getNama()).append(", ");
-            sb.append("\n");
-        }
-
-        sb.append("Penumpang Berdiri: ");
-        if (penumpangBerdiri.isEmpty()) sb.append("<kosong>\n");
-        else {
-            for (Penumpang p : penumpangBerdiri) sb.append(p.getNama()).append(", ");
-            sb.append("\n");
-        }
-
-        sb.append("Jumlah Penumpang : ").append(totalSemuaPenumpang()).append("\n");
-        sb.append("Total Pendapatan : Rp ").append(totalPendapatan).append("\n");
-
-        return sb.toString();
     }
+
+    sb.append("\nKursi Biasa (16 kursi):\n");
+
+    // ======================= KURSI BIASA =============================
+    for (int i = 0; i < 16; i++) {
+        if (i < penumpangBiasa.size()) {
+            Penumpang p = penumpangBiasa.get(i);
+            sb.append(String.format("  (B%02d) %-12s (%d th)\n",
+                    i + 1, p.getNama(), p.getUmur()));
+        } else {
+            sb.append(String.format("  (B%02d) <kosong>\n", i + 1));
+        }
+    }
+
+    // ======================= BERDIRI ================================
+    sb.append("\nPenumpang Berdiri:\n");
+
+    for (int i = 0; i < 20; i++) {
+        if (i < penumpangBerdiri.size()) {
+            Penumpang p = penumpangBerdiri.get(i);
+            sb.append(String.format("  (S%02d) %-12s (%d th)\n",
+                    i + 1, p.getNama(), p.getUmur()));
+        } else {
+            sb.append(String.format("  (S%02d) <kosong>\n", i + 1));
+        }
+    }
+
+    sb.append("\n────────────────────────────────────\n");
+    sb.append(String.format("Total Penumpang : %d\n", totalSemuaPenumpang()));
+    sb.append(String.format("Total Pendapatan: Rp %d\n", totalPendapatan));
+
+    return sb.toString();
+}
 }

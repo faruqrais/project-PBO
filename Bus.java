@@ -15,6 +15,11 @@ public class Bus {
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_YELLOW = "\u001B[33m";
     public static final String ANSI_CYAN = "\u001B[36m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+
+    private String pad(String text, int width) {
+    return String.format("%-" + width + "s", text);
+}
 
     public Bus() {
         penumpangBiasa = new ArrayList<>();
@@ -144,48 +149,65 @@ public class Bus {
     "└───────────────────────────────────┘\n\n"
     + Bus.ANSI_RESET);
 
-    // ======================= KURSI PRIORITAS ==========================
-    sb.append("Kursi Prioritas (4 kursi):\n");
+        sb.append(Bus.ANSI_CYAN +
+    "┌───────────────────────────────────────────────────────────┐\n" +
+    "│                 STATUS BUS TRANS KOETARADJA               │\n" +
+    "└───────────────────────────────────────────────────────────┘\n\n"
+    + Bus.ANSI_RESET);
 
-    for (int i = 0; i < 4; i++) {
-        if (i < penumpangPrioritas.size()) {
-            Penumpang p = penumpangPrioritas.get(i);
-            sb.append(String.format("  (P%02d) %-12s (%d th)\n",
-                    i + 1, p.getNama(), p.getUmur()));
-        } else {
-            sb.append(String.format("  (P%02d) <kosong>\n", i + 1));
+    sb.append(
+        ANSI_BLUE   + pad("KURSI PRIORITAS", 26) + ANSI_RESET + " | " +
+        ANSI_GREEN  + pad("KURSI BIASA", 26)     + ANSI_RESET + " | " +
+        ANSI_YELLOW + pad("BERDIRI", 26)         + ANSI_RESET + "\n"
+    );
+
+    sb.append("--------------------------------------------------------------------------\n");
+
+    int max = 20;
+
+    for (int i = 1; i <= max; i++) {
+
+        // ======================= KURSI PRIORITAS ==========================
+        String prioRaw = "";
+        if (i <= 4) {
+            if (i <= penumpangPrioritas.size()) {
+                Penumpang p = penumpangPrioritas.get(i - 1);
+                prioRaw = String.format("(P%02d) %-10s (%d th)", i, p.getNama(), p.getUmur());
+            } else {
+                prioRaw = String.format("(P%02d) <kosong>", i);
+            }
         }
+        String prio = ANSI_BLUE + pad(prioRaw, 26) + ANSI_RESET;
+
+        // ======================= KURSI BIASA ==========================
+        String biasaRaw = "";
+        if (i <= 16) {
+            if (i <= penumpangBiasa.size()) {
+                Penumpang p = penumpangBiasa.get(i - 1);
+                biasaRaw = String.format("(B%02d) %-10s (%d th)", i, p.getNama(), p.getUmur());
+            } else {
+                biasaRaw = String.format("(B%0 2d) <kosong>", i);
+            }
+        }
+        String biasa = ANSI_GREEN + pad(biasaRaw, 26) + ANSI_RESET;
+
+        // ======================= BERDIRI ==========================
+        String berdiriRaw = "";
+        if (i <= 20) {
+            if (i <= penumpangBerdiri.size()) {
+                Penumpang p = penumpangBerdiri.get(i - 1);
+                berdiriRaw = String.format("(S%02d) %-10s (%d th)", i, p.getNama(), p.getUmur());
+            } else {
+                berdiriRaw = String.format("(S%02d) <kosong>", i);
+            }
+        }
+        String berdiri = ANSI_YELLOW + pad(berdiriRaw, 26) + ANSI_RESET;
+
+        sb.append(prio + " | " + biasa + " | " + berdiri + "\n");
     }
 
-    sb.append("\nKursi Biasa (16 kursi):\n");
-
-    // ======================= KURSI BIASA =============================
-    for (int i = 0; i < 16; i++) {
-        if (i < penumpangBiasa.size()) {
-            Penumpang p = penumpangBiasa.get(i);
-            sb.append(String.format("  (B%02d) %-12s (%d th)\n",
-                    i + 1, p.getNama(), p.getUmur()));
-        } else {
-            sb.append(String.format("  (B%02d) <kosong>\n", i + 1));
-        }
-    }
-
-    // ======================= BERDIRI ================================
-    sb.append("\nPenumpang Berdiri:\n");
-
-    for (int i = 0; i < 20; i++) {
-        if (i < penumpangBerdiri.size()) {
-            Penumpang p = penumpangBerdiri.get(i);
-            sb.append(String.format("  (S%02d) %-12s (%d th)\n",
-                    i + 1, p.getNama(), p.getUmur()));
-        } else {
-            sb.append(String.format("  (S%02d) <kosong>\n", i + 1));
-        }
-    }
-
-    sb.append("\n────────────────────────────────────\n");
-    sb.append(String.format("Total Penumpang : %d\n", totalSemuaPenumpang()));
-    sb.append(String.format("Total Pendapatan: Rp %d\n", totalPendapatan));
+    sb.append("\n" + ANSI_CYAN + "Total Penumpang : " + ANSI_RESET + totalSemuaPenumpang() + "\n");
+    sb.append(ANSI_CYAN + "Total Pendapatan: " + ANSI_RESET + "Rp " + totalPendapatan + "\n");
 
     return sb.toString();
 }

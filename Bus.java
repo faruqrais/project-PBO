@@ -186,7 +186,7 @@ public class Bus {
                 Penumpang p = penumpangBiasa.get(i - 1);
                 biasaRaw = String.format("(B%02d) %-10s (%d th)", i, p.getNama(), p.getUmur());
             } else {
-                biasaRaw = String.format("(B%0 2d) <kosong>", i);
+                biasaRaw = String.format("(B%02d) <kosong>", i);
             }
         }
         String biasa = ANSI_GREEN + pad(biasaRaw, 26) + ANSI_RESET;

@@ -168,15 +168,24 @@ public class Bus {
     for (int i = 1; i <= max; i++) {
 
         // ======================= KURSI PRIORITAS ==========================
-        String prioRaw = "";
+         String prioRaw = "";
         if (i <= 4) {
             if (i <= penumpangPrioritas.size()) {
                 Penumpang p = penumpangPrioritas.get(i - 1);
-                prioRaw = String.format("(P%02d) %-10s (%d th)", i, p.getNama(), p.getUmur());
-            } else {
-                prioRaw = String.format("(P%02d) <kosong>", i);
-            }
-        }
+
+                String alasan = "";
+                if (p.getUmur() > 60) alasan = "LANSIA";
+                else if (p.getUmur() < 10) alasan = "ANAK";
+                else if (p.isHamil()) alasan = "HAMIL";
+
+                //tampilin kenapa penumpang ddk di kursi prioritas
+                prioRaw = ANSI_BLUE + String.format("(P%02d) %-10s (%d th, %s)", 
+                        i, p.getNama(), p.getUmur(), alasan) + ANSI_RESET;
+
+    } else {
+        prioRaw = ANSI_BLUE + String.format("(P%02d) <kosong>", i) + ANSI_RESET;
+    }
+}
         String prio = ANSI_BLUE + pad(prioRaw, 26) + ANSI_RESET;
 
         // ======================= KURSI BIASA ==========================
